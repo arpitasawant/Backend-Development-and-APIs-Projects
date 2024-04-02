@@ -33,14 +33,16 @@ app.get("/api", (req, res) => {
 app.get("/api/:date", (req, res) => {
     const paramsDate = req.params.date;
     const invalidDate = "Invalid Date";
-    const date = parseInt(paramsDate) < 10000
+    const unixTimestamp = parseInt(paramsDate);
+    const date = isNaN(unixTimestamp)
         ? new Date(paramsDate)
-        : new Date(parseInt(paramsDate))
+        : new Date(unixTimestamp);
 
     date.toString() === invalidDate
         ? res.json({ error: invalidDate })
         : res.json({ unix: date.valueOf(), utc: date.toUTCString() });
 });
+
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
